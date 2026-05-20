@@ -10,10 +10,27 @@ namespace final_project__race_cars
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D menuBackground;
+        Texture2D startButton;
+        Texture2D quitButton;
+        Texture2D carsButton;
+
+        bool startPressed = false;
+        bool carsPressed = false;
+        bool quitPressed = false;
+
+
         enum Screen {Menu, TrackSelect, Race }
         Screen screen;
-        MouseState mouseState;
+        MouseState mouse;
         Rectangle window;
+
+        float carsScale = 1.0f;
+        float startScale = 1.0f;
+        float quitScale = 1.0f;
+
+        int startX = 40, startY = 206, startW = 300, startH = 68;
+        int carsX = 40, carsY = 280, carsW = 300, carsH = 68;
+        int quitX = 40, quitY = 354, quitW = 300, quitH = 68;
 
         public Game1()
         {
@@ -38,6 +55,9 @@ namespace final_project__race_cars
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             menuBackground = Content.Load<Texture2D>("menu-screen");
+            startButton = Content.Load<Texture2D>("start-button");
+            quitButton = Content.Load<Texture2D>("quit-button");
+            carsButton = Content.Load<Texture2D>("cars-button");
 
             // TODO: use this.Content to load your game content here
         }
@@ -46,14 +66,74 @@ namespace final_project__race_cars
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            mouseState = Mouse.GetState();
+            mouse = Mouse.GetState();
             if(screen == Screen.Menu)
             {
-                if(mouseState.LeftButton == ButtonState.Pressed)
+                int mouseX = mouse.X;
+                int mouseY = mouse.Y;
+
+                if (mouseX >= startX && mouseX <= startX + startW && mouseY >= startY && mouseY <= startY + startH)
                 {
-                    int mouseX = mouseState.X;
-                    int mouseY = mouseState.Y;
+                    if (mouse.LeftButton == ButtonState.Pressed && startPressed == false)
+                    {
+                        startPressed = true;
+                        startScale = 0.9f;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && startPressed == true)
+                    {
+                        startPressed = false;
+                        startScale = 1.0f;
+                        //screen = Screen.TrackSelect;
+                    }
                 }
+                else
+                {
+                    startScale = 1.0f;
+                    startPressed = false;
+                }
+
+                if (mouseX >= carsX && mouseX <= carsX + carsW && mouseY >= carsY && mouseY <= carsY + carsH)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && carsPressed == false)
+                    {
+                        carsPressed = true;
+                        carsScale = 0.9f;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && carsPressed == true)
+                    {
+                        carsPressed = false;
+                        carsScale = 1.0f;
+                        //screen = Screen.Cars;
+                    }
+                }
+                else
+                {
+                    carsScale = 1.0f;
+                    carsPressed = false;
+                }
+
+                if (mouseX >= quitX && mouseX <= quitX + quitW && mouseY >= quitY && mouseY <= quitY + quitH)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && quitPressed == false)
+                    {
+                        quitPressed = true;
+                        quitScale = 0.9f;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && quitPressed == true)
+                    {
+                        quitPressed = false;
+                        quitScale = 1.0f;
+                        //Exit();
+                    }
+                }
+                else
+                {
+                    quitScale = 1.0f;
+                    quitPressed = false;
+                }
+
+
+
 
             }
             // TODO: Add your update logic here
@@ -68,7 +148,18 @@ namespace final_project__race_cars
             if(screen == Screen.Menu)
             {
                 _spriteBatch.Draw(menuBackground, window, Color.White);
+                if(screen == Screen.Menu)
+{
+                    _spriteBatch.Draw(menuBackground, window, Color.White);
 
+                    // Draw buttons with scale
+                    Vector2 startOrigin = new Vector2(0, 0);
+                    _spriteBatch.Draw(startButton, new Rectangle(startX, startY, (int)(startW * startScale), (int)(startH * startScale)), Color.White);
+
+                    _spriteBatch.Draw(carsButton, new Rectangle(carsX, carsY, (int)(carsW * carsScale), (int)(carsH * carsScale)), Color.White);
+
+                    _spriteBatch.Draw(quitButton, new Rectangle(quitX, quitY, (int)(quitW * quitScale), (int)(quitH * quitScale)), Color.White);
+                }
             }
             _spriteBatch.End();
 
