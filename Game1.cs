@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Threading;
 
 namespace final_project__race_cars
 {
@@ -13,13 +14,15 @@ namespace final_project__race_cars
         Texture2D startButton;
         Texture2D quitButton;
         Texture2D carsButton;
+        Texture2D trackSelectBackground;
 
         bool startPressed = false;
         bool carsPressed = false;
         bool quitPressed = false;
+        bool backPressed = false;
 
 
-        enum Screen {Menu, TrackSelect, Race }
+        enum Screen {Menu, TrackSelect, Race, Cars}
         Screen screen;
         MouseState mouse;
         Rectangle window;
@@ -28,9 +31,13 @@ namespace final_project__race_cars
         float startScale = 1.0f;
         float quitScale = 1.0f;
 
-        int startX = 40, startY = 206, startW = 300, startH = 68;
-        int carsX = 40, carsY = 280, carsW = 300, carsH = 68;
-        int quitX = 40, quitY = 354, quitW = 300, quitH = 68;
+        int startOrigX = 40, startOrigY = 206, startW = 300, startH = 68;
+        int carsOrigX = 40, carsOrigY = 280, carsW = 300, carsH = 68;
+        int quitOrigX = 40, quitOrigY = 358, quitW = 300, quitH = 68;
+
+        int startX = 40, startY = 206;
+        int carsX = 40, carsY = 280;
+        int quitX = 40, quitY = 354;
 
         public Game1()
         {
@@ -58,6 +65,7 @@ namespace final_project__race_cars
             startButton = Content.Load<Texture2D>("start-button");
             quitButton = Content.Load<Texture2D>("quit-button");
             carsButton = Content.Load<Texture2D>("cars-button");
+            trackSelectBackground = Content.Load<Texture2D>("track-select");
 
             // TODO: use this.Content to load your game content here
         }
@@ -72,37 +80,52 @@ namespace final_project__race_cars
                 int mouseX = mouse.X;
                 int mouseY = mouse.Y;
 
-                if (mouseX >= startX && mouseX <= startX + startW && mouseY >= startY && mouseY <= startY + startH)
+                // START button
+                if (mouseX >= startOrigX && mouseX <= startOrigX + startW && mouseY >= startOrigY && mouseY <= startOrigY + startH)
                 {
                     if (mouse.LeftButton == ButtonState.Pressed && startPressed == false)
                     {
                         startPressed = true;
                         startScale = 0.9f;
+                        startX = startOrigX + (int)(startW * (1 - startScale) / 2);
+                        startY = startOrigY + (int)(startH * (1 - startScale) / 2);
                     }
                     if (mouse.LeftButton == ButtonState.Released && startPressed == true)
                     {
                         startPressed = false;
                         startScale = 1.0f;
-                        //screen = Screen.TrackSelect;
+                        startX = startOrigX;
+                        startY = startOrigY;
+                        screen = Screen.TrackSelect;
                     }
                 }
                 else
                 {
                     startScale = 1.0f;
                     startPressed = false;
+                    startX = startOrigX;
+                    startY = startOrigY;
                 }
 
-                if (mouseX >= carsX && mouseX <= carsX + carsW && mouseY >= carsY && mouseY <= carsY + carsH)
+
+
+
+                // CARS button
+                if (mouseX >= carsOrigX && mouseX <= carsOrigX + carsW && mouseY >= carsOrigY && mouseY <= carsOrigY + carsH)
                 {
                     if (mouse.LeftButton == ButtonState.Pressed && carsPressed == false)
                     {
                         carsPressed = true;
                         carsScale = 0.9f;
+                        carsX = carsOrigX + (int)(carsW * (1 - carsScale) / 2);
+                        carsY = carsOrigY + (int)(carsH * (1 - carsScale) / 2);
                     }
                     if (mouse.LeftButton == ButtonState.Released && carsPressed == true)
                     {
                         carsPressed = false;
                         carsScale = 1.0f;
+                        carsX = carsOrigX;
+                        carsY = carsOrigY;
                         //screen = Screen.Cars;
                     }
                 }
@@ -110,31 +133,64 @@ namespace final_project__race_cars
                 {
                     carsScale = 1.0f;
                     carsPressed = false;
+                    carsX = carsOrigX;
+                    carsY = carsOrigY;
                 }
 
-                if (mouseX >= quitX && mouseX <= quitX + quitW && mouseY >= quitY && mouseY <= quitY + quitH)
+
+
+                // QUIT button
+                if (mouseX >= quitOrigX && mouseX <= quitOrigX + quitW && mouseY >= quitOrigY && mouseY <= quitOrigY + quitH)
                 {
                     if (mouse.LeftButton == ButtonState.Pressed && quitPressed == false)
                     {
                         quitPressed = true;
                         quitScale = 0.9f;
+                        quitX = quitOrigX + (int)(quitW * (1 - quitScale) / 2);
+                        quitY = quitOrigY + (int)(quitH * (1 - quitScale) / 2);
                     }
                     if (mouse.LeftButton == ButtonState.Released && quitPressed == true)
                     {
                         quitPressed = false;
                         quitScale = 1.0f;
-                        //Exit();
+                        quitX = quitOrigX;
+                        quitY = quitOrigY;
+                        Exit();
                     }
                 }
                 else
                 {
                     quitScale = 1.0f;
                     quitPressed = false;
+                    quitX = quitOrigX;
+                    quitY = quitOrigY;
                 }
 
 
 
 
+            }
+
+
+            else if (screen == Screen.TrackSelect)
+            {
+                // Back button hitbox - adjust coordinates as needed
+                if (mouse.X >= 20 && mouse.X <= 120 && mouse.Y >= 420 && mouse.Y <= 460)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && backPressed == false)
+                    {
+                        backPressed = true;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && backPressed == true)
+                    {
+                        backPressed = false;
+                        screen = Screen.Menu;
+                    }
+                }
+                else
+                {
+                    backPressed = false;
+                }
             }
             // TODO: Add your update logic here
 
@@ -145,9 +201,8 @@ namespace final_project__race_cars
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            if(screen == Screen.Menu)
-            {
-                _spriteBatch.Draw(menuBackground, window, Color.White);
+
+
                 if(screen == Screen.Menu)
 {
                     _spriteBatch.Draw(menuBackground, window, Color.White);
@@ -160,7 +215,11 @@ namespace final_project__race_cars
 
                     _spriteBatch.Draw(quitButton, new Rectangle(quitX, quitY, (int)(quitW * quitScale), (int)(quitH * quitScale)), Color.White);
                 }
-            }
+                else if(screen == Screen.TrackSelect)
+                {
+                    _spriteBatch.Draw(trackSelectBackground, window, Color.White);
+                }
+
             _spriteBatch.End();
 
 
