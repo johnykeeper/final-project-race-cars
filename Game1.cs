@@ -25,8 +25,8 @@ namespace final_project__race_cars
         bool backPressed = false;
         bool carsBackPressed = false;
 
-        Rectangle player1Rect = new Rectangle(150, 180, 80, 80);
-        Rectangle player2Rect = new Rectangle(550, 180, 80, 80);
+        Rectangle player1Rect = new Rectangle(50, 130, 240, 160);
+        Rectangle player2Rect = new Rectangle(500, 130, 240, 160);
 
         Rectangle[] colorRects = new Rectangle[8];
         Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Purple, Color.Orange, Color.Pink, Color.White };
@@ -82,10 +82,7 @@ namespace final_project__race_cars
             carsSelectBackground = Content.Load<Texture2D>("cars-colours");
             player1Car = new Cars(Content.Load<Texture2D>("player1car"), player1Rect);
             player2Car = new Cars(Content.Load<Texture2D>("player2car"), player2Rect);
-            for(int i = 0; i < 8; i++)
-            {
-                colorRects[i] = new Rectangle(60 + (i * 85), 400, 70, 40);
-            }
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -95,6 +92,7 @@ namespace final_project__race_cars
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mouse = Mouse.GetState();
+            Window.Title = $"Mouse position : X={mouse.X}, Y={mouse.Y}";
             if (screen == Screen.Menu)
             {
                 int mouseX = mouse.X;
@@ -216,54 +214,100 @@ namespace final_project__race_cars
             }
 
             //cars
-
             else if (screen == Screen.carsColour)
             {
                 // Check for mouse click
                 if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released)
                 {
-                    // Check Player 1 car click
-                    if (mouse.X >= player1Rect.X && mouse.X <= player1Rect.X + player1Rect.Width &&
-                        mouse.Y >= player1Rect.Y && mouse.Y <= player1Rect.Y + player1Rect.Height)
+
+                    if (mouse.X >= player1Rect.X && mouse.X <= player1Rect.X + 240 && mouse.Y >= player1Rect.Y && mouse.Y <= player1Rect.Y + 160)
                     {
                         selectedCar = 1;
                         player1Car.IsSelected = true;
                         player2Car.IsSelected = false;
                     }
 
-                    // Check Player 2 car click
-                    if (mouse.X >= player2Rect.X && mouse.X <= player2Rect.X + player2Rect.Width &&
-                        mouse.Y >= player2Rect.Y && mouse.Y <= player2Rect.Y + player2Rect.Height)
+                    if (mouse.X >= player2Rect.X && mouse.X <= player2Rect.X + 240 && mouse.Y >= player2Rect.Y && mouse.Y <= player2Rect.Y + 160)
                     {
                         selectedCar = 2;
                         player1Car.IsSelected = false;
                         player2Car.IsSelected = true;
                     }
 
-                    // Check color palette clicks
-                    for (int i = 0; i < 8; i++)
+                    if (mouse.Y >= 350 && mouse.Y <= 392)
                     {
-                        if (mouse.X >= colorRects[i].X && mouse.X <= colorRects[i].X + colorRects[i].Width &&
-                            mouse.Y >= colorRects[i].Y && mouse.Y <= colorRects[i].Y + colorRects[i].Height)
+                        if (mouse.X >= 75 && mouse.X <= 112)      // Color 1
                         {
-                            if (selectedCar == 1)
-                            {
-                                player1Car.Tint = colors[i];
-                            }
-                            else
-                            {
-                                player2Car.Tint = colors[i];
-                            }
+                            if (selectedCar == 1) player1Car.Tint = Color.Red;
+                            else player2Car.Tint = Color.Red;
+                        }
+                        else if (mouse.X >= 130 && mouse.X <= 167) // Color 2
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Orange;
+                            else player2Car.Tint = Color.Orange;
+                        }
+                        else if (mouse.X >= 185 && mouse.X <= 222) // Color 3
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Yellow;
+                            else player2Car.Tint = Color.Yellow;
+                        }
+                        else if (mouse.X >= 240 && mouse.X <= 277) // Color 4
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.LightGreen;
+                            else player2Car.Tint = Color.LightGreen;
+                        }
+                        else if (mouse.X >= 195 && mouse.X <= 332) // Color 5
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Green;
+                            else player2Car.Tint = Color.Green;
+                        }
+                        else if (mouse.X >= 350 && mouse.X <= 387) // Color 6
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.LightBlue;
+                            else player2Car.Tint = Color.LightBlue;
+                        }
+                        else if (mouse.X >= 405 && mouse.X <= 442) // Color 7
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Blue;
+                            else player2Car.Tint = Color.Blue;
+                        }
+                        else if (mouse.X >= 460 && mouse.X <= 497) // Color 8
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Purple;
+                            else player2Car.Tint = Color.Purple;
+                        }
+                        else if (mouse.X >= 515 && mouse.X <= 552) // Color 9
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Pink;
+                            else player2Car.Tint = Color.Pink;
+                        }
+                        else if (mouse.X >= 570 && mouse.X <= 607) // Color 9
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.White;
+                            else player2Car.Tint = Color.White;
+                        }
+                        else if (mouse.X >= 625 && mouse.X <= 662) // Color 9
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Gray;
+                            else player2Car.Tint = Color.Gray;
+                        }
+                        else if (mouse.X >= 680 && mouse.X <= 717) // Color 9
+                        {
+                            if (selectedCar == 1) player1Car.Tint = Color.Black;
+                            else player2Car.Tint = Color.Black;
                         }
                     }
 
-                    // Back button
-                    if (mouse.X >= 20 && mouse.X <= 120 && mouse.Y >= 420 && mouse.Y <= 460)
+
+                    if (mouse.X >= 20 && mouse.X <= 100 && mouse.Y >= 430 && mouse.Y <= 470)
                     {
                         screen = Screen.Menu;
                     }
                 }
             }
+
+
+
 
 
 
@@ -296,9 +340,17 @@ namespace final_project__race_cars
                 {
                     _spriteBatch.Draw(trackSelectBackground, window, Color.White);
                 }
-                
+            else if (screen == Screen.carsColour)
+            {
+                _spriteBatch.Draw(carsSelectBackground, window, Color.White);
 
-                _spriteBatch.End();
+                player1Car.Draw(_spriteBatch);
+                player2Car.Draw(_spriteBatch);
+            }
+
+
+
+            _spriteBatch.End();
 
 
 

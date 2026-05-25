@@ -37,18 +37,6 @@
 /processorParam:TextureFormat=Color
 /build:menu-screen.png
 
-#begin player2car.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:player2car.png
-
 #begin start-button.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -85,7 +73,7 @@
 /processorParam:TextureFormat=Color
 /build:X:/My Drive/A final project racing game/cars-button.png;cars-button.png
 
-#begin X:/My Drive/A final project racing game/player1car.png
+#begin X:/My Drive/A final project racing game/player1Car.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,7 +83,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:X:/My Drive/A final project racing game/player1car.png;player1car.png
+/build:X:/My Drive/A final project racing game/player1Car.png;player1Car.png
+
+#begin X:/My Drive/A final project racing game/player2Car.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/A final project racing game/player2Car.png;player2Car.png
 
 #begin X:/My Drive/A final project racing game/quit-button.png
 /importer:TextureImporter
