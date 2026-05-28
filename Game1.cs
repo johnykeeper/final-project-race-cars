@@ -16,6 +16,8 @@ namespace final_project__race_cars
         Texture2D carsButton;
         Texture2D trackSelectBackground;
         Texture2D carsSelectBackground;
+        Texture2D Track1Background;
+        Texture2D Track1Cover;
         Cars player1Car;
         Cars player2Car;
 
@@ -23,6 +25,7 @@ namespace final_project__race_cars
         bool carsPressed = false;
         bool quitPressed = false;
         bool backPressed = false;
+        bool Track1Pressed = false;
         bool carsBackPressed = false;
 
         Rectangle player1Rect = new Rectangle(50, 130, 240, 160);
@@ -34,7 +37,7 @@ namespace final_project__race_cars
         int selectedCar = 1;
 
 
-        enum Screen {Menu, TrackSelect, Race, carsColour}
+        enum Screen {Menu, TrackSelect, Race, carsColour, Track1}
         Screen screen;
         MouseState mouse;
         MouseState oldMouse;
@@ -82,6 +85,10 @@ namespace final_project__race_cars
             carsSelectBackground = Content.Load<Texture2D>("cars-colours");
             player1Car = new Cars(Content.Load<Texture2D>("player1car"), player1Rect);
             player2Car = new Cars(Content.Load<Texture2D>("player2car"), player2Rect);
+            Track1Background = Content.Load<Texture2D>("track1");
+            Track1Cover = Content.Load<Texture2D>("track1-Cover");
+
+
 
 
             // TODO: use this.Content to load your game content here
@@ -207,16 +214,61 @@ namespace final_project__race_cars
                         screen = Screen.Menu;
                     }
                 }
+                else if (mouse.X >= 35 && mouse.X <= 184 && mouse.Y >= 107 && mouse.Y <= 251)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && Track1Pressed == false)
+                    {
+                        Track1Pressed = true;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && Track1Pressed == true)
+                    {
+                        Track1Pressed = false;
+                        screen = Screen.Track1;
+                    }
+
+                }
+                else
+                {
+                    backPressed = false;
+                    Track1Pressed = false;
+                }
+            }
+
+            else if(screen == Screen.Track1)
+            {
+
+
+                if (mouse.X >= 20 && mouse.X <= 160 && mouse.Y >= 410 && mouse.Y <= 460)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && backPressed == false)
+                    {
+                        backPressed = true;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && backPressed == true)
+                    {
+                        backPressed = false;
+                        screen = Screen.TrackSelect;
+                    }
+                }
                 else
                 {
                     backPressed = false;
                 }
+               
+                
+                    player1Car.Position = new Rectangle(100, 100, 100, 100);
+                    player2Car.Position = new Rectangle(100, 100, 100, 100);
+                
+
             }
 
             //cars
             else if (screen == Screen.carsColour)
             {
                 // Check for mouse click
+
+                player1Car.Position = new Rectangle(50, 130, 240, 160);
+                player2Car.Position = new Rectangle(500, 130, 240, 160);
                 if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released)
                 {
 
@@ -339,6 +391,8 @@ namespace final_project__race_cars
                 else if(screen == Screen.TrackSelect)
                 {
                     _spriteBatch.Draw(trackSelectBackground, window, Color.White);
+
+                _spriteBatch.Draw(Track1Cover, new Rectangle(43, 116, 137, 110), Color.White);
                 }
             else if (screen == Screen.carsColour)
             {
@@ -347,10 +401,18 @@ namespace final_project__race_cars
                 player1Car.Draw(_spriteBatch);
                 player2Car.Draw(_spriteBatch);
             }
+            else if (screen == Screen.Track1)
+            { 
+                
+                _spriteBatch.Draw(Track1Background, window, Color.White);
+                player1Car.Draw(_spriteBatch);
+                player2Car.Draw(_spriteBatch);
+
+            }
 
 
 
-            _spriteBatch.End();
+                _spriteBatch.End();
 
 
 
