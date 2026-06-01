@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Threading;
+
 
 namespace final_project__race_cars
 {
@@ -27,6 +27,7 @@ namespace final_project__race_cars
         bool backPressed = false;
         bool Track1Pressed = false;
         bool carsBackPressed = false;
+        bool raceStarted = false;
 
         Rectangle player1Rect = new Rectangle(50, 130, 240, 160);
         Rectangle player2Rect = new Rectangle(500, 130, 240, 160);
@@ -223,6 +224,7 @@ namespace final_project__race_cars
                     if (mouse.LeftButton == ButtonState.Released && Track1Pressed == true)
                     {
                         Track1Pressed = false;
+                        raceStarted = false;
                         screen = Screen.Track1;
                     }
 
@@ -236,7 +238,19 @@ namespace final_project__race_cars
 
             else if(screen == Screen.Track1)
             {
-
+                KeyboardState kb = Keyboard.GetState();
+                if(!raceStarted)
+                {
+                    player1Car.Position = new Rectangle(300, 350, 40, 60);
+                    player2Car.Position = new Rectangle(400, 350, 40, 60);
+                    player1Car.rotationAngle = MathHelper.PiOver2;
+                    player2Car.rotationAngle = MathHelper.PiOver2;
+                    player1Car.IsSelected = false;
+                    player2Car.IsSelected = false;
+                    player1Car.OnTrack = true;
+                    player2Car.OnTrack = true;
+                    raceStarted = true;
+                }
 
                 if (mouse.X >= 20 && mouse.X <= 160 && mouse.Y >= 410 && mouse.Y <= 460)
                 {
@@ -247,17 +261,59 @@ namespace final_project__race_cars
                     if (mouse.LeftButton == ButtonState.Released && backPressed == true)
                     {
                         backPressed = false;
+                        player1Car.OnTrack = false;
+                        player2Car.OnTrack = false;
+                        raceStarted = false;
                         screen = Screen.TrackSelect;
                     }
                 }
+
                 else
                 {
                     backPressed = false;
                 }
-               
+
+                //player1
+
+
+                if (kb.IsKeyDown(Keys.A))
+                    player1Car.rotationAngle -= 0.05f;
+                if (kb.IsKeyDown(Keys.D))
+                    player1Car.rotationAngle += 0.05f;
+                if (kb.IsKeyDown(Keys.W))
+                {
+                    player1Car.velocity.X += (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                    player1Car.velocity.Y += (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                }
+
+                if (kb.IsKeyDown(Keys.S))
+                    player1Car.velocity *= 0.8f;
+
+                //player2
                 
-                    player1Car.Position = new Rectangle(100, 100, 100, 100);
-                    player2Car.Position = new Rectangle(100, 100, 100, 100);
+                if (kb.IsKeyDown(Keys.Left))
+                    player2Car.rotationAngle -= 0.05f;
+                if (kb.IsKeyDown(Keys.Right))
+                    player2Car.rotationAngle += 0.05f;
+                if (kb.IsKeyDown(Keys.Up))
+                {
+                    player2Car.velocity.X += (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                    player2Car.velocity.Y += (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                }
+
+                if (kb.IsKeyDown(Keys.Down))
+                    player2Car.velocity *= 0.8f;
+
+                player1Car.Position = new Rectangle(player1Car.Position.X + (int)player1Car.velocity.X, player1Car.Position.Y + (int)player1Car.velocity.Y, player1Car.Position.Width, player1Car.Position.Width);
+                player2Car.Position = new Rectangle(player2Car.Position.X + (int)player2Car.velocity.X, player2Car.Position.Y + (int)player2Car.velocity.Y, player2Car.Position.Width, player2Car.Position.Width);
+
+
+                player1Car.velocity = Vector2.Zero;
+                player2Car.velocity = Vector2.Zero;
+
+               
+               
+
                 
 
             }
@@ -288,62 +344,62 @@ namespace final_project__race_cars
 
                     if (mouse.Y >= 350 && mouse.Y <= 392)
                     {
-                        if (mouse.X >= 75 && mouse.X <= 112)      // Color 1
+                        if (mouse.X >= 75 && mouse.X <= 112)      // Colour 1
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Red;
                             else player2Car.Tint = Color.Red;
                         }
-                        else if (mouse.X >= 130 && mouse.X <= 167) // Color 2
+                        else if (mouse.X >= 130 && mouse.X <= 167) // Colour 2
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Orange;
                             else player2Car.Tint = Color.Orange;
                         }
-                        else if (mouse.X >= 185 && mouse.X <= 222) // Color 3
+                        else if (mouse.X >= 185 && mouse.X <= 222) // Colour 3
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Yellow;
                             else player2Car.Tint = Color.Yellow;
                         }
-                        else if (mouse.X >= 240 && mouse.X <= 277) // Color 4
+                        else if (mouse.X >= 240 && mouse.X <= 277) // Colour 4
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.LightGreen;
                             else player2Car.Tint = Color.LightGreen;
                         }
-                        else if (mouse.X >= 195 && mouse.X <= 332) // Color 5
+                        else if (mouse.X >= 195 && mouse.X <= 332) // Colour 5
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Green;
                             else player2Car.Tint = Color.Green;
                         }
-                        else if (mouse.X >= 350 && mouse.X <= 387) // Color 6
+                        else if (mouse.X >= 350 && mouse.X <= 387) // Colour 6
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.LightBlue;
                             else player2Car.Tint = Color.LightBlue;
                         }
-                        else if (mouse.X >= 405 && mouse.X <= 442) // Color 7
+                        else if (mouse.X >= 405 && mouse.X <= 442) // Colour 7
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Blue;
                             else player2Car.Tint = Color.Blue;
                         }
-                        else if (mouse.X >= 460 && mouse.X <= 497) // Color 8
+                        else if (mouse.X >= 460 && mouse.X <= 497) // Colour 8
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Purple;
                             else player2Car.Tint = Color.Purple;
                         }
-                        else if (mouse.X >= 515 && mouse.X <= 552) // Color 9
+                        else if (mouse.X >= 515 && mouse.X <= 552) // Colour 9
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Pink;
                             else player2Car.Tint = Color.Pink;
                         }
-                        else if (mouse.X >= 570 && mouse.X <= 607) // Color 9
+                        else if (mouse.X >= 570 && mouse.X <= 607) // Colour 9
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.White;
                             else player2Car.Tint = Color.White;
                         }
-                        else if (mouse.X >= 625 && mouse.X <= 662) // Color 9
+                        else if (mouse.X >= 625 && mouse.X <= 662) // Colour 9
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Gray;
                             else player2Car.Tint = Color.Gray;
                         }
-                        else if (mouse.X >= 680 && mouse.X <= 717) // Color 9
+                        else if (mouse.X >= 680 && mouse.X <= 717) // Colour 9
                         {
                             if (selectedCar == 1) player1Car.Tint = Color.Black;
                             else player2Car.Tint = Color.Black;
@@ -353,6 +409,9 @@ namespace final_project__race_cars
 
                     if (mouse.X >= 20 && mouse.X <= 100 && mouse.Y >= 430 && mouse.Y <= 470)
                     {
+                        player1Car.OnTrack = false;
+                        player2Car.OnTrack = false;
+                        raceStarted = false;
                         screen = Screen.Menu;
                     }
                 }

@@ -14,6 +14,10 @@ namespace final_project__race_cars
         public Color Tint;
         public float scale;
         public bool IsSelected;
+        public Vector2 velocity;
+        public float speed = 3f;
+        public float rotationAngle = 0f;
+        public bool OnTrack = false;
 
         public Cars(Texture2D texture, Rectangle position)
         {
@@ -33,6 +37,12 @@ namespace final_project__race_cars
                 int newX = Position.X - (newWidth - Position.Width) / 2;
                 int newY = Position.Y - (newHeight - Position.Height) / 2;
                 spriteBatch.Draw(Texture, new Rectangle(newX, newY, newWidth, newHeight), Tint);
+            }
+            else if(OnTrack)
+            {
+                Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
+                Vector2 drawpos = new Vector2(Position.X + Position.Width / 2f, Position.Y + Position.Height / 2f);
+                spriteBatch.Draw(Texture, drawpos, null, Tint, rotationAngle, origin, 0.04f, SpriteEffects.None, 0f);
             }
             else
             {
