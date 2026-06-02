@@ -282,12 +282,12 @@ namespace final_project__race_cars
                     player1Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.W))
                 {
-                    player1Car.velocity.X += (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
-                    player1Car.velocity.Y += (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                    player1Car.Position = new Rectangle(player1Car.Position.X + (int)(Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed),
+                    player1Car.Position.Y + (int)(Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed),
+                    player1Car.Position.Width, player1Car.Position.Height);
                 }
 
-                if (kb.IsKeyDown(Keys.S))
-                    player1Car.velocity *= 0.8f;
+
 
                 //player2
                 
@@ -297,19 +297,16 @@ namespace final_project__race_cars
                     player2Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.Up))
                 {
-                    player2Car.velocity.X += (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
-                    player2Car.velocity.Y += (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                    player2Car.Position = new Rectangle(player2Car.Position.X + (int)(Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed),
+                   player2Car.Position.Y + (int)(Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed),
+                   player2Car.Position.Width, player2Car.Position.Height);
                 }
 
-                if (kb.IsKeyDown(Keys.Down))
-                    player2Car.velocity *= 0.8f;
-
-                player1Car.Position = new Rectangle(player1Car.Position.X + (int)player1Car.velocity.X, player1Car.Position.Y + (int)player1Car.velocity.Y, player1Car.Position.Width, player1Car.Position.Width);
-                player2Car.Position = new Rectangle(player2Car.Position.X + (int)player2Car.velocity.X, player2Car.Position.Y + (int)player2Car.velocity.Y, player2Car.Position.Width, player2Car.Position.Width);
 
 
-                player1Car.velocity = Vector2.Zero;
-                player2Car.velocity = Vector2.Zero;
+                
+
+
 
                
                
