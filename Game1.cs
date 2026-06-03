@@ -241,8 +241,8 @@ namespace final_project__race_cars
                 KeyboardState kb = Keyboard.GetState();
                 if(!raceStarted)
                 {
-                    player1Car.Position = new Rectangle(300, 350, 40, 60);
-                    player2Car.Position = new Rectangle(400, 350, 40, 60);
+                    player1Car.pos = new Vector2(300, 350);
+                    player2Car.pos = new Vector2(400, 350);
                     player1Car.rotationAngle = MathHelper.PiOver2;
                     player2Car.rotationAngle = MathHelper.PiOver2;
                     player1Car.IsSelected = false;
@@ -282,36 +282,62 @@ namespace final_project__race_cars
                     player1Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.W))
                 {
-                    player1Car.Position = new Rectangle(player1Car.Position.X + (int)(Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed),
-                    player1Car.Position.Y + (int)(Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed),
-                    player1Car.Position.Width, player1Car.Position.Height);
+                    player1Car.currentSpeed = player1Car.speed;
+                    player1Car.pos.X += (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                    player1Car.pos.Y += (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
                 }
+                else
+                {
+                    player1Car.currentSpeed = 0f;
+                }
+                    
+                    
 
 
 
                 //player2
-                
+
                 if (kb.IsKeyDown(Keys.Left))
                     player2Car.rotationAngle -= 0.05f;
                 if (kb.IsKeyDown(Keys.Right))
                     player2Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.Up))
                 {
-                    player2Car.Position = new Rectangle(player2Car.Position.X + (int)(Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed),
-                   player2Car.Position.Y + (int)(Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed),
-                   player2Car.Position.Width, player2Car.Position.Height);
+                    player2Car.currentSpeed = player2Car.speed;
+                    player2Car.pos.X += (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                    player2Car.pos.Y += (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+
+                }
+                else
+                {
+                    player2Car.currentSpeed = 0f;
+                }
+
+                    Rectangle p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                Rectangle p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+
+
+                if(p1bounds.Intersects(p2bounds))
+                {
+                    Vector2 diff = player1Car.pos - player2Car.pos;
+                    diff.Normalize();
+                    while(p1bounds.Intersects(p2bounds))
+                    {
+                        p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                        p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+                        player1Car.pos += diff * 2f;
+                        player2Car.pos -= diff * 2f;
+                    }
+                    player1Car.pos += diff * (player2Car.currentSpeed * 0.5f);
+                    player2Car.pos += diff * (player1Car.currentSpeed * 0.5f);
+
                 }
 
 
 
-                
 
-
-
-               
-               
-
-                
 
             }
 

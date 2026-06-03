@@ -15,9 +15,11 @@ namespace final_project__race_cars
         public float scale;
         public bool IsSelected;
         public Vector2 velocity;
+        public Vector2 pos;
         public float speed = 3f;
         public float rotationAngle = 0f;
         public bool OnTrack = false;
+        public float currentSpeed = 0f;
 
         public Cars(Texture2D texture, Rectangle position)
         {
@@ -41,8 +43,8 @@ namespace final_project__race_cars
             else if(OnTrack)
             {
                 Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
-                Vector2 drawpos = new Vector2(Position.X + Position.Width / 2f, Position.Y + Position.Height / 2f);
-                spriteBatch.Draw(Texture, drawpos, null, Tint, rotationAngle, origin, 0.04f, SpriteEffects.None, 0f);
+                Vector2 drawpos = pos;
+                spriteBatch.Draw(Texture, drawpos, null, Tint, rotationAngle, origin, 0.02f, SpriteEffects.None, 0f);
             }
             else
             {
