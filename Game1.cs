@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 
 namespace final_project__race_cars
@@ -28,6 +29,8 @@ namespace final_project__race_cars
         bool Track1Pressed = false;
         bool carsBackPressed = false;
         bool raceStarted = false;
+        List<Rectangle> wallRects = new List<Rectangle>();
+        List<Rectangle> slowRects = new List<Rectangle>();
 
         Rectangle player1Rect = new Rectangle(50, 130, 240, 160);
         Rectangle player2Rect = new Rectangle(500, 130, 240, 160);
@@ -72,6 +75,63 @@ namespace final_project__race_cars
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
             screen = Screen.Menu;
+            wallRects = new List<Rectangle>
+            {
+             new Rectangle(189, 297, 418, 13),
+             new Rectangle(191, 135, 9, 163),
+             new Rectangle(197, 130, 45, 10),
+             new Rectangle(239, 136, 26, 21),
+             new Rectangle(265, 148, 272, 14),
+             new Rectangle(538, 134, 20, 21),
+             new Rectangle(558, 125, 49, 18),
+             new Rectangle(597, 137, 14, 167),
+             new Rectangle(169, 362, 470, 14),
+             new Rectangle(134, 331, 16, 25),
+             new Rectangle(124, 100, 13, 217),
+             new Rectangle(158, 69, 118, 10),
+             new Rectangle(136, 80, 23, 16),
+             new Rectangle(274, 72, 249, 22),
+             new Rectangle(521, 62, 117, 16),
+             new Rectangle(632, 73, 29, 16),
+             new Rectangle(656, 108, 22, 239),
+             new Rectangle(638, 345, 20, 22)
+             };
+            slowRects = new List<Rectangle>
+            {
+                new Rectangle(81, 375, 650, 18),
+                new Rectangle(681, 52, 37, 325),
+                new Rectangle(667, 333, 8, 38),
+                new Rectangle(658, 351, 6, 17),
+                new Rectangle(635, 364, 20, 7),
+                new Rectangle(669, 58, 10, 43),
+                new Rectangle(652, 53, 11, 35),
+                new Rectangle(632, 44, 14, 30),
+                new Rectangle(509, 46, 122, 20),
+                new Rectangle(498, 56, 34, 18),
+                new Rectangle(280, 59, 230, 19),
+                new Rectangle(267, 47, 12, 22),
+                new Rectangle(141, 49, 123, 14),
+                new Rectangle(140, 55, 26, 15),
+                new Rectangle(131, 62, 26, 16),
+                new Rectangle(123, 69, 19, 17),
+                new Rectangle(116, 82, 16, 24),
+                new Rectangle(102, 107, 24, 223),
+                new Rectangle(118, 329, 17, 27),
+                new Rectangle(135, 341, 9, 29),
+                new Rectangle(143, 355, 15, 27),
+                new Rectangle(157, 368, 25, 18),
+                new Rectangle(203, 280, 395, 19),
+                new Rectangle(573, 143, 23, 140),
+                new Rectangle(556, 141, 17, 19),
+                new Rectangle(550, 145, 6, 27),
+                new Rectangle(538, 156, 9, 17),
+                new Rectangle(258, 160, 276, 14),
+                new Rectangle(239, 146, 8, 35),
+                new Rectangle(247, 152, 8, 32),
+                new Rectangle(206, 139, 27, 15),
+                new Rectangle(202, 145, 10, 139)
+
+            };
             base.Initialize();
         }
 
@@ -336,7 +396,50 @@ namespace final_project__race_cars
                 }
 
 
+                foreach(Rectangle wall in wallRects)
+                {
+                    if(p1bounds.Intersects(wall))
+                    {
+                        Vector2 diff = player1Car.pos - new Vector2(wall.Center.X, wall.Center.Y);
+                        diff.Normalize();
+                        while (p1bounds.Intersects(wall))
+                        {
+                            player1Car.pos += diff * 1f;
+                            p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                        }
+                    }
 
+                    if (p2bounds.Intersects(wall))
+                    {
+                        Vector2 diff = player2Car.pos - new Vector2(wall.Center.X, wall.Center.Y);
+                        diff.Normalize();
+                        while (p2bounds.Intersects(wall))
+                        {
+                            player2Car.pos += diff * 1f;
+                            p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+                        }
+                    }
+
+                }
+
+                //foreach (Rectangle slow in slowRects)
+                //{
+                //    if (p1bounds.Intersects(slow))
+                //    {
+                //        player1Car.speed = 1f;
+                        
+                //    }
+                //    if(p2bounds.Intersects(slow))
+                //    {
+                //        player2Car.speed = 1f;
+                //    }
+                    
+                //}
+
+                
+                
+
+               
 
 
             }
