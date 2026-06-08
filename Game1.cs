@@ -77,59 +77,83 @@ namespace final_project__race_cars
             screen = Screen.Menu;
             wallRects = new List<Rectangle>
             {
-             new Rectangle(189, 297, 418, 13),
-             new Rectangle(191, 135, 9, 163),
-             new Rectangle(197, 130, 45, 10),
-             new Rectangle(239, 136, 26, 21),
-             new Rectangle(265, 148, 272, 14),
-             new Rectangle(538, 134, 20, 21),
-             new Rectangle(558, 125, 49, 18),
-             new Rectangle(597, 137, 14, 167),
-             new Rectangle(169, 362, 470, 14),
-             new Rectangle(134, 331, 16, 25),
-             new Rectangle(124, 100, 13, 217),
-             new Rectangle(158, 69, 118, 10),
-             new Rectangle(136, 80, 23, 16),
-             new Rectangle(274, 72, 249, 22),
-             new Rectangle(521, 62, 117, 16),
-             new Rectangle(632, 73, 29, 16),
-             new Rectangle(656, 108, 22, 239),
-             new Rectangle(638, 345, 20, 22)
+            new Rectangle(152, 59, 130, 4),
+            new Rectangle(272, 61, 21, 9),
+            new Rectangle(281, 70, 20, 7),
+            new Rectangle(290, 73, 217, 5),
+            new Rectangle(506, 57, 19, 20),
+            new Rectangle(525, 58, 107, 4),
+            new Rectangle(630, 63, 19, 6),
+            new Rectangle(648, 69, 14, 12),
+            new Rectangle(660, 79, 15, 18),
+            new Rectangle(672, 94, 10, 20),
+            new Rectangle(679, 110, 8, 219),
+            new Rectangle(676, 321, 6, 17),
+            new Rectangle(671, 335, 11, 21),
+            new Rectangle(667, 346, 13, 20),
+            new Rectangle(657, 354, 16, 18),
+            new Rectangle(650, 366, 14, 17),
+            new Rectangle(638, 368, 16, 16),
+            new Rectangle(621, 374, 21, 13),
+            new Rectangle(174, 377, 446, 15),
+            new Rectangle(134, 373, 40, 11),
+            new Rectangle(102, 362, 60, 9),
+            new Rectangle(102, 353, 48, 12),
+            new Rectangle(103, 339, 34, 15),
+            new Rectangle(99, 321, 29, 16),
+            new Rectangle(112, 107, 9, 213),
+            new Rectangle(119, 85, 11, 27),
+            new Rectangle(130, 69, 13, 27),
+            new Rectangle(142, 58, 23, 24),
+            new Rectangle(163, 58, 18, 8),
+            new Rectangle(204, 144, 35, 13),
+            new Rectangle(235, 147, 12, 22),
+            new Rectangle(248, 154, 11, 25),
+            new Rectangle(256, 159, 286, 16),
+            new Rectangle(539, 154, 15, 12),
+            new Rectangle(550, 149, 13, 8),
+            new Rectangle(557, 145, 40, 15),
+            new Rectangle(586, 160, 10, 136),
+            new Rectangle(201, 286, 387, 9),
+            new Rectangle(202, 151, 6, 135)
              };
             slowRects = new List<Rectangle>
             {
-                new Rectangle(81, 375, 650, 18),
-                new Rectangle(681, 52, 37, 325),
-                new Rectangle(667, 333, 8, 38),
-                new Rectangle(658, 351, 6, 17),
-                new Rectangle(635, 364, 20, 7),
-                new Rectangle(669, 58, 10, 43),
-                new Rectangle(652, 53, 11, 35),
-                new Rectangle(632, 44, 14, 30),
-                new Rectangle(509, 46, 122, 20),
-                new Rectangle(498, 56, 34, 18),
-                new Rectangle(280, 59, 230, 19),
-                new Rectangle(267, 47, 12, 22),
-                new Rectangle(141, 49, 123, 14),
-                new Rectangle(140, 55, 26, 15),
-                new Rectangle(131, 62, 26, 16),
-                new Rectangle(123, 69, 19, 17),
-                new Rectangle(116, 82, 16, 24),
-                new Rectangle(102, 107, 24, 223),
-                new Rectangle(118, 329, 17, 27),
-                new Rectangle(135, 341, 9, 29),
-                new Rectangle(143, 355, 15, 27),
-                new Rectangle(157, 368, 25, 18),
-                new Rectangle(203, 280, 395, 19),
-                new Rectangle(573, 143, 23, 140),
-                new Rectangle(556, 141, 17, 19),
-                new Rectangle(550, 145, 6, 27),
-                new Rectangle(538, 156, 9, 17),
-                new Rectangle(258, 160, 276, 14),
-                new Rectangle(239, 146, 8, 35),
-                new Rectangle(247, 152, 8, 32),
-                new Rectangle(206, 139, 27, 15),
-                new Rectangle(202, 145, 10, 139)
+                new Rectangle(124, 76, 16, 245),
+                new Rectangle(164, 64, 110, 16),
+                new Rectangle(145, 73, 15, 9),
+                new Rectangle(139, 80, 7, 15),
+                new Rectangle(150, 80, 11, 9),
+                new Rectangle(275, 73, 11, 14),
+                new Rectangle(283, 78, 231, 15),
+                new Rectangle(511, 76, 11, 14),
+                new Rectangle(521, 69, 9, 13),
+                new Rectangle(530, 63, 100, 14),
+                new Rectangle(630, 70, 14, 15),
+                new Rectangle(643, 78, 13, 17),
+                new Rectangle(656, 95, 13, 19),
+                new Rectangle(663, 117, 13, 211),
+                new Rectangle(659, 329, 8, 11),
+                new Rectangle(652, 337, 11, 14),
+                new Rectangle(645, 351, 7, 7),
+                new Rectangle(633, 357, 11, 7),
+                new Rectangle(618, 360, 16, 8),
+                new Rectangle(189, 361, 427, 14),
+                new Rectangle(164, 363, 24, 13),
+                new Rectangle(144, 348, 19, 16),
+                new Rectangle(128, 319, 11, 25),
+                new Rectangle(206, 293, 389, 18),
+                new Rectangle(595, 287, 12, 26),
+                new Rectangle(600, 138, 8, 148),
+                new Rectangle(557, 129, 42, 12),
+                new Rectangle(545, 129, 12, 19),
+                new Rectangle(532, 144, 10, 9),
+                new Rectangle(265, 148, 265, 15),
+                new Rectangle(252, 140, 13, 23),
+                new Rectangle(240, 132, 12, 11),
+                new Rectangle(195, 129, 44, 15),
+                new Rectangle(190, 141, 10, 160),
+                new Rectangle(195, 300, 14, 7)
 
             };
             base.Initialize();
@@ -334,6 +358,9 @@ namespace final_project__race_cars
                 }
 
                 //player1
+                Rectangle p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                Rectangle p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
 
 
                 if (kb.IsKeyDown(Keys.A))
@@ -342,9 +369,37 @@ namespace final_project__race_cars
                     player1Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.W))
                 {
-                    player1Car.currentSpeed = player1Car.speed;
-                    player1Car.pos.X += (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
-                    player1Car.pos.Y += (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+
+                    float moveX = (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                    float moveY = (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+
+                    player1Car.pos.X += moveX;
+
+                    p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+
+                    foreach (Rectangle wall in wallRects)
+                    {
+                        if(p1bounds.Intersects(wall))
+                        {
+                            player1Car.pos.X -= moveX;
+                            break;
+                        }
+
+                    }
+                    player1Car.pos.Y += moveY;
+
+                    p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+
+                    foreach (Rectangle wall in wallRects)
+                    {
+                        if (p1bounds.Intersects(wall))
+                        {
+                            player1Car.pos.Y -= moveY;
+                            break;
+                        }
+
+                    }
+
                 }
                 else
                 {
@@ -363,9 +418,35 @@ namespace final_project__race_cars
                     player2Car.rotationAngle += 0.05f;
                 if (kb.IsKeyDown(Keys.Up))
                 {
-                    player2Car.currentSpeed = player2Car.speed;
-                    player2Car.pos.X += (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
-                    player2Car.pos.Y += (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                    float moveX = (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                    float moveY = (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+
+                    player2Car.pos.X += moveX;
+
+                    p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+                    foreach (Rectangle wall in wallRects)
+                    {
+                        if(p2bounds.Intersects(wall))
+                        {
+                            player2Car.pos.X -= moveX;
+                            break;
+                        }
+
+                    }
+                    player2Car.pos.Y += moveY;
+
+                    p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+                    foreach (Rectangle wall in wallRects)
+                    {
+                        if (p2bounds.Intersects(wall))
+                        {
+                            player2Car.pos.Y -= moveY;
+                            break;
+                        }
+
+                    }
 
                 }
                 else
@@ -373,8 +454,8 @@ namespace final_project__race_cars
                     player2Car.currentSpeed = 0f;
                 }
 
-                    Rectangle p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
-                Rectangle p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+                p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
 
 
 
@@ -396,50 +477,27 @@ namespace final_project__race_cars
                 }
 
 
-                foreach(Rectangle wall in wallRects)
-                {
-                    if(p1bounds.Intersects(wall))
-                    {
-                        Vector2 diff = player1Car.pos - new Vector2(wall.Center.X, wall.Center.Y);
-                        diff.Normalize();
-                        while (p1bounds.Intersects(wall))
-                        {
-                            player1Car.pos += diff * 1f;
-                            p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
-                        }
-                    }
+                player1Car.speed = 3f;
+                player2Car.speed = 3f;
 
-                    if (p2bounds.Intersects(wall))
+                foreach (Rectangle slow in slowRects)
+                {
+                    if (p1bounds.Intersects(slow))
                     {
-                        Vector2 diff = player2Car.pos - new Vector2(wall.Center.X, wall.Center.Y);
-                        diff.Normalize();
-                        while (p2bounds.Intersects(wall))
-                        {
-                            player2Car.pos += diff * 1f;
-                            p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
-                        }
+                        player1Car.speed = 1.5f;
+
+                    }
+                    if (p2bounds.Intersects(slow))
+                    {
+                        player2Car.speed = 1.5f;
                     }
 
                 }
 
-                //foreach (Rectangle slow in slowRects)
-                //{
-                //    if (p1bounds.Intersects(slow))
-                //    {
-                //        player1Car.speed = 1f;
-                        
-                //    }
-                //    if(p2bounds.Intersects(slow))
-                //    {
-                //        player2Car.speed = 1f;
-                //    }
-                    
-                //}
 
-                
-                
 
-               
+
+
 
 
             }
