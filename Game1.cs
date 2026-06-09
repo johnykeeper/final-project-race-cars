@@ -21,6 +21,10 @@ namespace final_project__race_cars
         Texture2D Track1Cover;
         Cars player1Car;
         Cars player2Car;
+        Cars firstplace;
+        Cars secondplace;
+
+        SpriteFont font;
 
         bool startPressed = false;
         bool carsPressed = false;
@@ -34,6 +38,9 @@ namespace final_project__race_cars
 
         Rectangle player1Rect = new Rectangle(50, 130, 240, 160);
         Rectangle player2Rect = new Rectangle(500, 130, 240, 160);
+        Rectangle finishLinestart = new Rectangle(390, 300, 6, 77);
+        
+        Rectangle finishLineend = new Rectangle(402, 297, 7, 79);
 
         Rectangle[] colorRects = new Rectangle[8];
         Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Purple, Color.Orange, Color.Pink, Color.White };
@@ -172,6 +179,7 @@ namespace final_project__race_cars
             player2Car = new Cars(Content.Load<Texture2D>("player2car"), player2Rect);
             Track1Background = Content.Load<Texture2D>("track1");
             Track1Cover = Content.Load<Texture2D>("track1-Cover");
+            font = Content.Load<SpriteFont>("font");
 
 
 
@@ -433,7 +441,7 @@ namespace final_project__race_cars
                             break;
                         }
 
-                    }
+                    } 
                     player2Car.pos.Y += moveY;
 
                     p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
@@ -493,8 +501,91 @@ namespace final_project__race_cars
                     }
 
                 }
+                player1Car.currentLaptime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                player2Car.currentLaptime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+                if(p1bounds.Intersects(finishLineend))
+                {
+                    if(!player1Car.touchingEnd)
+                    {
+                        player1Car.touchingEnd = true;
+                        player1Car.crossedEnd = true;
+                    }
+                    else { player1Car.touchingEnd = false;}
+                    
+                }
+                if(p1bounds.Intersects(finishLinestart))
+                {
+                    if (!player1Car.touchingEnd)
+                    {
+                        player1Car.touchingStart = true;
+                        if (player1Car.crossedEnd)
+                        {
+                            player1Car.lapCount++;
+                            player1Car.totalLaptime += player1Car.totalLaptime / player1Car.lapCount;
+                            player1Car.currentLaptime = 0f;
+                            player1Car.crossedEnd = false;
+                        }
+                    }
+                    else
+                    {
+                        player1Car.touchingStart = false;
+                    }
+                }
+                if (p2bounds.Intersects(finishLineend))
+                {
+                    if (!player2Car.touchingEnd)
+                    {
+                        player2Car.touchingEnd = true;
+                        player2Car.crossedEnd = true;
+                    }
+                    else { player2Car.touchingEnd = false; }
+                }
+                if (p2bounds.Intersects(finishLinestart))
+                {
+                    if (!player2Car.touchingEnd)
+                    {
+                        player2Car.touchingStart = true;
+                        if (player2Car.crossedEnd)
+                        {
+                            player2Car.lapCount++;
+                            player2Car.totalLaptime += player2Car.totalLaptime / player2Car.lapCount;
+                            player2Car.currentLaptime = 0f;
+                            player2Car.crossedEnd = false;
+                        }
+                    }
+                    else
+                    {
+                        player2Car.touchingStart = false;
+                    }
+                }
 
+                
+
+                if(player1Car.lapCount > player2Car.lapCount)
+                {
+                    firstplace = player1Car;
+                    secondplace = player2Car;
+                }
+                else if (player2Car.lapCount > player1Car.lapCount)
+                {
+                    firstplace = player2Car;
+                    secondplace = player1Car;
+                }
+                else
+                {
+                    if(player1Car.currentLaptime < player2Car.currentLaptime)
+                    {
+                        firstplace = player1Car;
+                        secondplace = player2Car;
+                    }
+
+                    else
+                    {
+                        firstplace = player2Car;
+                        secondplace = player1Car;
+                    }
+                }
 
 
 
@@ -650,6 +741,9 @@ namespace final_project__race_cars
                 _spriteBatch.Draw(Track1Background, window, Color.White);
                 player1Car.Draw(_spriteBatch);
                 player2Car.Draw(_spriteBatch);
+
+                _spriteBatch.DrawString(font, $"1st: {firstplace.colorName}", new Vector2(600, 20), Color.White);
+                _spriteBatch.DrawString(font, $"2nd: {secondplace.colorName}", new Vector2(600, 50), Color.White);
 
             }
 

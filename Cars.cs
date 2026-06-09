@@ -21,6 +21,22 @@ namespace final_project__race_cars
         public bool OnTrack = false;
         public float currentSpeed = 0f;
 
+        public int lapCount = 0;
+
+        public bool crossedStart = false;
+        public bool crossedEnd = false;
+        public bool touchingStart = false;
+        public bool touchingEnd = false;
+
+        public float currentLaptime = 0f;
+        public float totalLaptime = 0f;
+        public float averageLaptime = 0f;
+
+        public string colorName = "";
+
+        Cars firstplace;
+        Cars secondplace;
+
         public Cars(Texture2D texture, Rectangle position)
         {
             Texture = texture;
