@@ -23,6 +23,7 @@ namespace final_project__race_cars
         Cars player2Car;
         Cars firstplace;
         Cars secondplace;
+        
 
         SpriteFont font;
 
@@ -181,7 +182,8 @@ namespace final_project__race_cars
             Track1Cover = Content.Load<Texture2D>("track1-Cover");
             font = Content.Load<SpriteFont>("font");
 
-
+            firstplace = player1Car;
+            secondplace = player2Car;
 
 
             // TODO: use this.Content to load your game content here
@@ -501,68 +503,100 @@ namespace final_project__race_cars
                     }
 
                 }
-                player1Car.currentLaptime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                player2Car.currentLaptime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if(p1bounds.Intersects(finishLineend))
+
+
+                player1Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                player2Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // START SIDE
+
+                if (p1bounds.Intersects(finishLinestart))
                 {
-                    if(!player1Car.touchingEnd)
+                    if (!player1Car.onStartLine)
                     {
-                        player1Car.touchingEnd = true;
-                        player1Car.crossedEnd = true;
+                        player1Car.onStartLine = true;
+
+                        // Only arm lap counting if they touched the start side first
+                        player1Car.crossedStartLine = true;
                     }
-                    else { player1Car.touchingEnd = false;}
-                    
                 }
-                if(p1bounds.Intersects(finishLinestart))
+                else
                 {
-                    if (!player1Car.touchingEnd)
+                    player1Car.onStartLine = false;
+                }
+
+
+                // END SIDE
+
+                if (p1bounds.Intersects(finishLineend))
+                {
+                    if (!player1Car.onEndLine)
                     {
-                        player1Car.touchingStart = true;
-                        if (player1Car.crossedEnd)
+                        player1Car.onEndLine = true;
+
+                        if (player1Car.crossedStartLine)
                         {
                             player1Car.lapCount++;
-                            player1Car.totalLaptime += player1Car.totalLaptime / player1Car.lapCount;
-                            player1Car.currentLaptime = 0f;
-                            player1Car.crossedEnd = false;
+
+                            player1Car.totalLapTime += player1Car.currentLapTime;
+
+                            player1Car.averageLapTime =
+                                player1Car.totalLapTime / player1Car.lapCount;
+
+                            player1Car.currentLapTime = 0f;
+
+                            // Must touch start side again before another lap
+                            player1Car.crossedStartLine = false;
                         }
                     }
-                    else
-                    {
-                        player1Car.touchingStart = false;
-                    }
                 }
-                if (p2bounds.Intersects(finishLineend))
+                else
                 {
-                    if (!player2Car.touchingEnd)
-                    {
-                        player2Car.touchingEnd = true;
-                        player2Car.crossedEnd = true;
-                    }
-                    else { player2Car.touchingEnd = false; }
+                    player1Car.onEndLine = false;
                 }
+
                 if (p2bounds.Intersects(finishLinestart))
                 {
-                    if (!player2Car.touchingEnd)
+                    if (!player2Car.onStartLine)
                     {
-                        player2Car.touchingStart = true;
-                        if (player2Car.crossedEnd)
-                        {
-                            player2Car.lapCount++;
-                            player2Car.totalLaptime += player2Car.totalLaptime / player2Car.lapCount;
-                            player2Car.currentLaptime = 0f;
-                            player2Car.crossedEnd = false;
-                        }
-                    }
-                    else
-                    {
-                        player2Car.touchingStart = false;
+                        player2Car.onStartLine = true;
+                        player2Car.crossedStartLine = true;
                     }
                 }
+                else
+                {
+                    player2Car.onStartLine = false;
+                }
 
-                
 
-                if(player1Car.lapCount > player2Car.lapCount)
+                if (p2bounds.Intersects(finishLineend))
+                {
+                    if (!player2Car.onEndLine)
+                    {
+                        player2Car.onEndLine = true;
+
+                        if (player2Car.crossedStartLine)
+                        {
+                            player2Car.lapCount++;
+
+                            player2Car.totalLapTime += player2Car.currentLapTime;
+
+                            player2Car.averageLapTime =
+                                player2Car.totalLapTime / player2Car.lapCount;
+
+                            player2Car.currentLapTime = 0f;
+
+                            player2Car.crossedStartLine = false;
+                        }
+                    }
+                }
+                else
+                {
+                    player2Car.onEndLine = false;
+                }
+
+                if (player1Car.lapCount > player2Car.lapCount)
                 {
                     firstplace = player1Car;
                     secondplace = player2Car;
@@ -574,20 +608,17 @@ namespace final_project__race_cars
                 }
                 else
                 {
-                    if(player1Car.currentLaptime < player2Car.currentLaptime)
+                    if (player1Car.currentLapTime > player2Car.currentLapTime)
                     {
                         firstplace = player1Car;
                         secondplace = player2Car;
                     }
-
                     else
                     {
                         firstplace = player2Car;
                         secondplace = player1Car;
                     }
                 }
-
-
 
 
 
@@ -621,63 +652,161 @@ namespace final_project__race_cars
                     {
                         if (mouse.X >= 75 && mouse.X <= 112)      // Colour 1
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Red;
-                            else player2Car.Tint = Color.Red;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Red;
+                                player1Car.colorName = "Red";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Red;
+                                player2Car.colorName = "Red";
+                            }
                         }
                         else if (mouse.X >= 130 && mouse.X <= 167) // Colour 2
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Orange;
-                            else player2Car.Tint = Color.Orange;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Orange;
+                                player1Car.colorName = "Orange";
+                            }
+
+                            else
+                            {
+                                player2Car.Tint = Color.Orange;
+                                player2Car.colorName = "Orange";
+                            }
                         }
                         else if (mouse.X >= 185 && mouse.X <= 222) // Colour 3
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Yellow;
-                            else player2Car.Tint = Color.Yellow;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Yellow;
+                                player1Car.colorName = "Yellow";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Yellow;
+                                player2Car.colorName = "Yellow";
+                            }
                         }
                         else if (mouse.X >= 240 && mouse.X <= 277) // Colour 4
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.LightGreen;
-                            else player2Car.Tint = Color.LightGreen;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.LightGreen;
+                                player1Car.colorName = "Light green";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.LightGreen;
+                                player2Car.colorName = "Light green";
+                            }
                         }
                         else if (mouse.X >= 195 && mouse.X <= 332) // Colour 5
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Green;
-                            else player2Car.Tint = Color.Green;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Green;
+                                player1Car.colorName = "green";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Green;
+                                player2Car.colorName = "green";
+                            }
                         }
+
                         else if (mouse.X >= 350 && mouse.X <= 387) // Colour 6
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.LightBlue;
-                            else player2Car.Tint = Color.LightBlue;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.LightBlue;
+                                player1Car.colorName = "Light blue";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.LightBlue;
+                                player2Car.colorName = "light blue";
+                            }
                         }
                         else if (mouse.X >= 405 && mouse.X <= 442) // Colour 7
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Blue;
-                            else player2Car.Tint = Color.Blue;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Blue;
+                                player1Car.colorName = "blue";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.LightBlue;
+                                player2Car.colorName = "blue";
+                            }
                         }
                         else if (mouse.X >= 460 && mouse.X <= 497) // Colour 8
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Purple;
-                            else player2Car.Tint = Color.Purple;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Purple;
+                                player1Car.colorName = "Purple";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Purple;
+                                player2Car.colorName = "Purple";
+                            }
                         }
                         else if (mouse.X >= 515 && mouse.X <= 552) // Colour 9
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Pink;
-                            else player2Car.Tint = Color.Pink;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Pink;
+                                player1Car.colorName = "Pink";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Pink;
+                                player2Car.colorName = "Pink";
+                            }
                         }
-                        else if (mouse.X >= 570 && mouse.X <= 607) // Colour 9
+                        else if (mouse.X >= 570 && mouse.X <= 607) // Colour 10
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.White;
-                            else player2Car.Tint = Color.White;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.White;
+                                player1Car.colorName = "White";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.White;
+                                player2Car.colorName = "White";
+                            }
                         }
-                        else if (mouse.X >= 625 && mouse.X <= 662) // Colour 9
+                        else if (mouse.X >= 625 && mouse.X <= 662) // Colour 11
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Gray;
-                            else player2Car.Tint = Color.Gray;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Gray;
+                                player1Car.colorName = "Gray";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Gray;
+                                player2Car.colorName = "Gray";
+                            }
                         }
-                        else if (mouse.X >= 680 && mouse.X <= 717) // Colour 9
+                        else if (mouse.X >= 680 && mouse.X <= 717) // Colour 12
                         {
-                            if (selectedCar == 1) player1Car.Tint = Color.Black;
-                            else player2Car.Tint = Color.Black;
+                            if (selectedCar == 1)
+                            {
+                                player1Car.Tint = Color.Black;
+                                player1Car.colorName = "Black";
+                            }
+                            else
+                            {
+                                player2Car.Tint = Color.Black;
+                                player2Car.colorName = "Black";
+                            }
                         }
                     }
 
@@ -742,8 +871,29 @@ namespace final_project__race_cars
                 player1Car.Draw(_spriteBatch);
                 player2Car.Draw(_spriteBatch);
 
-                _spriteBatch.DrawString(font, $"1st: {firstplace.colorName}", new Vector2(600, 20), Color.White);
-                _spriteBatch.DrawString(font, $"2nd: {secondplace.colorName}", new Vector2(600, 50), Color.White);
+                _spriteBatch.DrawString(
+                    font,
+                    $"1st: {firstplace.colorName}",
+                    new Vector2(600, 20),
+                    Color.White);
+
+                _spriteBatch.DrawString(
+                    font,
+                    $"Avg: {firstplace.averageLapTime:F2}s",
+                    new Vector2(700, 20),
+                    Color.White);
+
+                _spriteBatch.DrawString(
+                    font,
+                    $"2nd: {secondplace.colorName}",
+                    new Vector2(600, 50),
+                    Color.White);
+
+                _spriteBatch.DrawString(
+                    font,
+                    $"Avg: {secondplace.averageLapTime:F2}s",
+                    new Vector2(700, 50),
+                    Color.White);
 
             }
 
