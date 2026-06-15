@@ -104,6 +104,30 @@
 /processorParam:TextureFormat=Color
 /build:X:/My Drive/A final project racing game/cars-button.png;cars-button.png
 
+#begin X:/My Drive/A final project racing game/Go.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/A final project racing game/Go.png;Go.png
+
+#begin X:/My Drive/A final project racing game/One.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/A final project racing game/One.png;One.png
+
 #begin X:/My Drive/A final project racing game/player1Car.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -139,4 +163,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:X:/My Drive/A final project racing game/quit-button.png;quit-button.png
+
+#begin X:/My Drive/A final project racing game/Three.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/A final project racing game/Three.png;Three.png
+
+#begin X:/My Drive/A final project racing game/Two.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:X:/My Drive/A final project racing game/Two.png;Two.png
 

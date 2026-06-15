@@ -23,7 +23,15 @@ namespace final_project__race_cars
         Cars player2Car;
         Cars firstplace;
         Cars secondplace;
-        
+
+        Texture2D threeTexture;
+        Texture2D twoTexture;
+        Texture2D oneTexture;
+        Texture2D goTexture;
+
+        float countdownTimer = 0f;
+        bool countdownActive = false;
+
 
         SpriteFont font;
 
@@ -181,6 +189,10 @@ namespace final_project__race_cars
             Track1Background = Content.Load<Texture2D>("track1");
             Track1Cover = Content.Load<Texture2D>("track1-Cover");
             font = Content.Load<SpriteFont>("font");
+            threeTexture = Content.Load<Texture2D>("three");
+            twoTexture = Content.Load<Texture2D>("Two");
+            oneTexture = Content.Load<Texture2D>("One");
+            goTexture = Content.Load<Texture2D>("Go");
 
             firstplace = player1Car;
             secondplace = player2Car;
@@ -296,7 +308,25 @@ namespace final_project__race_cars
 
             else if (screen == Screen.TrackSelect)
             {
-                // Back button hitbox - adjust coordinates as needed
+
+
+                player1Car.lapCount = 0;
+                player2Car.lapCount = 0;
+
+                player1Car.currentLapTime = 0f;
+                player2Car.currentLapTime = 0f;
+
+                player1Car.totalLapTime = 0f;
+                player2Car.totalLapTime = 0f;
+
+                player1Car.averageLapTime = 0f;
+                player2Car.averageLapTime = 0f;
+
+                player1Car.crossedStartLine = false;
+                player2Car.crossedStartLine = false;
+
+                firstplace = player1Car;
+                secondplace = player2Car;
                 if (mouse.X >= 20 && mouse.X <= 120 && mouse.Y >= 420 && mouse.Y <= 460)
                 {
                     if (mouse.LeftButton == ButtonState.Pressed && backPressed == false)
@@ -335,14 +365,16 @@ namespace final_project__race_cars
                 KeyboardState kb = Keyboard.GetState();
                 if(!raceStarted)
                 {
-                    player1Car.pos = new Vector2(300, 350);
-                    player2Car.pos = new Vector2(400, 350);
+                    player1Car.pos = new Vector2(300, 325);
+                    player2Car.pos = new Vector2(300, 350);
                     player1Car.rotationAngle = MathHelper.PiOver2;
                     player2Car.rotationAngle = MathHelper.PiOver2;
                     player1Car.IsSelected = false;
                     player2Car.IsSelected = false;
                     player1Car.OnTrack = true;
                     player2Car.OnTrack = true;
+                    countdownTimer = 0f;
+                    countdownActive = true;
                     raceStarted = true;
                 }
 
@@ -370,257 +402,268 @@ namespace final_project__race_cars
                 //player1
                 Rectangle p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
                 Rectangle p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
-
-
-
-                if (kb.IsKeyDown(Keys.A))
-                    player1Car.rotationAngle -= 0.05f;
-                if (kb.IsKeyDown(Keys.D))
-                    player1Car.rotationAngle += 0.05f;
-                if (kb.IsKeyDown(Keys.W))
+                if (countdownActive)
                 {
+                    countdownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                    float moveX = (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
-                    float moveY = (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
-
-                    player1Car.pos.X += moveX;
-
-                    p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
-
-                    foreach (Rectangle wall in wallRects)
+                    if (countdownTimer >= 4f)
                     {
-                        if(p1bounds.Intersects(wall))
-                        {
-                            player1Car.pos.X -= moveX;
-                            break;
-                        }
-
+                        countdownActive = false;
                     }
-                    player1Car.pos.Y += moveY;
-
-                    p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
-
-                    foreach (Rectangle wall in wallRects)
-                    {
-                        if (p1bounds.Intersects(wall))
-                        {
-                            player1Car.pos.Y -= moveY;
-                            break;
-                        }
-
-                    }
-
                 }
-                else
+                if (!countdownActive)
                 {
-                    player1Car.currentSpeed = 0f;
-                }
-                    
-                    
 
 
 
-                //player2
-
-                if (kb.IsKeyDown(Keys.Left))
-                    player2Car.rotationAngle -= 0.05f;
-                if (kb.IsKeyDown(Keys.Right))
-                    player2Car.rotationAngle += 0.05f;
-                if (kb.IsKeyDown(Keys.Up))
-                {
-                    float moveX = (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
-                    float moveY = (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
-
-                    player2Car.pos.X += moveX;
-
-                    p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
-
-                    foreach (Rectangle wall in wallRects)
+                    if (kb.IsKeyDown(Keys.A))
+                        player1Car.rotationAngle -= 0.05f;
+                    if (kb.IsKeyDown(Keys.D))
+                        player1Car.rotationAngle += 0.05f;
+                    if (kb.IsKeyDown(Keys.W))
                     {
-                        if(p2bounds.Intersects(wall))
-                        {
-                            player2Car.pos.X -= moveX;
-                            break;
-                        }
 
-                    } 
-                    player2Car.pos.Y += moveY;
+                        float moveX = (float)Math.Cos(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
+                        float moveY = (float)Math.Sin(player1Car.rotationAngle - MathHelper.PiOver2) * player1Car.speed;
 
-                    p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+                        player1Car.pos.X += moveX;
 
-                    foreach (Rectangle wall in wallRects)
-                    {
-                        if (p2bounds.Intersects(wall))
-                        {
-                            player2Car.pos.Y -= moveY;
-                            break;
-                        }
-
-                    }
-
-                }
-                else
-                {
-                    player2Car.currentSpeed = 0f;
-                }
-
-                p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
-                p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
-
-
-
-                if(p1bounds.Intersects(p2bounds))
-                {
-                    Vector2 diff = player1Car.pos - player2Car.pos;
-                    diff.Normalize();
-                    while(p1bounds.Intersects(p2bounds))
-                    {
                         p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+
+                        foreach (Rectangle wall in wallRects)
+                        {
+                            if (p1bounds.Intersects(wall))
+                            {
+                                player1Car.pos.X -= moveX;
+                                break;
+                            }
+
+                        }
+                        player1Car.pos.Y += moveY;
+
+                        p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+
+                        foreach (Rectangle wall in wallRects)
+                        {
+                            if (p1bounds.Intersects(wall))
+                            {
+                                player1Car.pos.Y -= moveY;
+                                break;
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        player1Car.currentSpeed = 0f;
+                    }
+
+
+
+
+
+                    //player2
+
+                    if (kb.IsKeyDown(Keys.Left))
+                        player2Car.rotationAngle -= 0.05f;
+                    if (kb.IsKeyDown(Keys.Right))
+                        player2Car.rotationAngle += 0.05f;
+                    if (kb.IsKeyDown(Keys.Up))
+                    {
+                        float moveX = (float)Math.Cos(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+                        float moveY = (float)Math.Sin(player2Car.rotationAngle - MathHelper.PiOver2) * player2Car.speed;
+
+                        player2Car.pos.X += moveX;
+
                         p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
 
-                        player1Car.pos += diff * 2f;
-                        player2Car.pos -= diff * 2f;
-                    }
-                    player1Car.pos += diff * (player2Car.currentSpeed * 0.5f);
-                    player2Car.pos += diff * (player1Car.currentSpeed * 0.5f);
-
-                }
-
-
-                player1Car.speed = 3f;
-                player2Car.speed = 3f;
-
-                foreach (Rectangle slow in slowRects)
-                {
-                    if (p1bounds.Intersects(slow))
-                    {
-                        player1Car.speed = 1.5f;
-
-                    }
-                    if (p2bounds.Intersects(slow))
-                    {
-                        player2Car.speed = 1.5f;
-                    }
-
-                }
-
-
-
-                player1Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                player2Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                // START SIDE
-
-                if (p1bounds.Intersects(finishLinestart))
-                {
-                    if (!player1Car.onStartLine)
-                    {
-                        player1Car.onStartLine = true;
-
-                        // Only arm lap counting if they touched the start side first
-                        player1Car.crossedStartLine = true;
-                    }
-                }
-                else
-                {
-                    player1Car.onStartLine = false;
-                }
-
-
-                // END SIDE
-
-                if (p1bounds.Intersects(finishLineend))
-                {
-                    if (!player1Car.onEndLine)
-                    {
-                        player1Car.onEndLine = true;
-
-                        if (player1Car.crossedStartLine)
+                        foreach (Rectangle wall in wallRects)
                         {
-                            player1Car.lapCount++;
+                            if (p2bounds.Intersects(wall))
+                            {
+                                player2Car.pos.X -= moveX;
+                                break;
+                            }
 
-                            player1Car.totalLapTime += player1Car.currentLapTime;
+                        }
+                        player2Car.pos.Y += moveY;
 
-                            player1Car.averageLapTime =
-                                player1Car.totalLapTime / player1Car.lapCount;
+                        p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
 
-                            player1Car.currentLapTime = 0f;
+                        foreach (Rectangle wall in wallRects)
+                        {
+                            if (p2bounds.Intersects(wall))
+                            {
+                                player2Car.pos.Y -= moveY;
+                                break;
+                            }
 
-                            // Must touch start side again before another lap
-                            player1Car.crossedStartLine = false;
+                        }
+
+                    }
+                    else
+                    {
+                        player2Car.currentSpeed = 0f;
+                    }
+
+                    p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                    p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+
+
+                    if (p1bounds.Intersects(p2bounds))
+                    {
+                        Vector2 diff = player1Car.pos - player2Car.pos;
+                        diff.Normalize();
+                        while (p1bounds.Intersects(p2bounds))
+                        {
+                            p1bounds = new Rectangle((int)player1Car.pos.X - 5, (int)player1Car.pos.Y - 7, 10, 14);
+                            p2bounds = new Rectangle((int)player2Car.pos.X - 5, (int)player2Car.pos.Y - 7, 10, 14);
+
+                            player1Car.pos += diff * 2f;
+                            player2Car.pos -= diff * 2f;
+                        }
+                        player1Car.pos += diff * (player2Car.currentSpeed * 0.5f);
+                        player2Car.pos += diff * (player1Car.currentSpeed * 0.5f);
+
+                    }
+
+
+                    player1Car.speed = 3f;
+                    player2Car.speed = 3f;
+
+                    foreach (Rectangle slow in slowRects)
+                    {
+                        if (p1bounds.Intersects(slow))
+                        {
+                            player1Car.speed = 1.5f;
+
+                        }
+                        if (p2bounds.Intersects(slow))
+                        {
+                            player2Car.speed = 1.5f;
+                        }
+
+                    }
+
+
+
+                    player1Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    player2Car.currentLapTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    // START SIDE
+
+                    if (p1bounds.Intersects(finishLinestart))
+                    {
+                        if (!player1Car.onStartLine)
+                        {
+                            player1Car.onStartLine = true;
+
+                            // Only arm lap counting if they touched the start side first
+                            player1Car.crossedStartLine = true;
                         }
                     }
-                }
-                else
-                {
-                    player1Car.onEndLine = false;
-                }
-
-                if (p2bounds.Intersects(finishLinestart))
-                {
-                    if (!player2Car.onStartLine)
+                    else
                     {
-                        player2Car.onStartLine = true;
-                        player2Car.crossedStartLine = true;
+                        player1Car.onStartLine = false;
                     }
-                }
-                else
-                {
-                    player2Car.onStartLine = false;
-                }
 
 
-                if (p2bounds.Intersects(finishLineend))
-                {
-                    if (!player2Car.onEndLine)
+                    // END SIDE
+
+                    if (p1bounds.Intersects(finishLineend))
                     {
-                        player2Car.onEndLine = true;
-
-                        if (player2Car.crossedStartLine)
+                        if (!player1Car.onEndLine)
                         {
-                            player2Car.lapCount++;
+                            player1Car.onEndLine = true;
 
-                            player2Car.totalLapTime += player2Car.currentLapTime;
+                            if (player1Car.crossedStartLine)
+                            {
+                                player1Car.lapCount++;
 
-                            player2Car.averageLapTime =
-                                player2Car.totalLapTime / player2Car.lapCount;
+                                player1Car.totalLapTime += player1Car.currentLapTime;
 
-                            player2Car.currentLapTime = 0f;
+                                player1Car.averageLapTime =
+                                    player1Car.totalLapTime / player1Car.lapCount;
 
-                            player2Car.crossedStartLine = false;
+                                player1Car.currentLapTime = 0f;
+
+                                // Must touch start side again before another lap
+                                player1Car.crossedStartLine = false;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    player2Car.onEndLine = false;
-                }
+                    else
+                    {
+                        player1Car.onEndLine = false;
+                    }
 
-                if (player1Car.lapCount > player2Car.lapCount)
-                {
-                    firstplace = player1Car;
-                    secondplace = player2Car;
-                }
-                else if (player2Car.lapCount > player1Car.lapCount)
-                {
-                    firstplace = player2Car;
-                    secondplace = player1Car;
-                }
-                else
-                {
-                    if (player1Car.currentLapTime > player2Car.currentLapTime)
+                    if (p2bounds.Intersects(finishLinestart))
+                    {
+                        if (!player2Car.onStartLine)
+                        {
+                            player2Car.onStartLine = true;
+                            player2Car.crossedStartLine = true;
+                        }
+                    }
+                    else
+                    {
+                        player2Car.onStartLine = false;
+                    }
+
+
+                    if (p2bounds.Intersects(finishLineend))
+                    {
+                        if (!player2Car.onEndLine)
+                        {
+                            player2Car.onEndLine = true;
+
+                            if (player2Car.crossedStartLine)
+                            {
+                                player2Car.lapCount++;
+
+                                player2Car.totalLapTime += player2Car.currentLapTime;
+
+                                player2Car.averageLapTime =
+                                    player2Car.totalLapTime / player2Car.lapCount;
+
+                                player2Car.currentLapTime = 0f;
+
+                                player2Car.crossedStartLine = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        player2Car.onEndLine = false;
+                    }
+
+                    if (player1Car.lapCount > player2Car.lapCount)
                     {
                         firstplace = player1Car;
                         secondplace = player2Car;
                     }
-                    else
+                    else if (player2Car.lapCount > player1Car.lapCount)
                     {
                         firstplace = player2Car;
                         secondplace = player1Car;
                     }
+                    else
+                    {
+                        if (player1Car.currentLapTime > player2Car.currentLapTime)
+                        {
+                            firstplace = player1Car;
+                            secondplace = player2Car;
+                        }
+                        else
+                        {
+                            firstplace = player2Car;
+                            secondplace = player1Car;
+                        }
+                    }
+
                 }
-
-
 
             }
 
@@ -894,6 +937,22 @@ namespace final_project__race_cars
                     $"Avg: {secondplace.averageLapTime:F2}s",
                     new Vector2(700, 50),
                     Color.White);
+                if (countdownActive)
+                {
+                    Rectangle countdownRect = new Rectangle(300, 120, 200, 200);
+
+                    if (countdownTimer < 1f)
+                        _spriteBatch.Draw(threeTexture, countdownRect, Color.White);
+
+                    else if (countdownTimer < 2f)
+                        _spriteBatch.Draw(twoTexture, countdownRect, Color.White);
+
+                    else if (countdownTimer < 3f)
+                        _spriteBatch.Draw(oneTexture, countdownRect, Color.White);
+
+                    else
+                        _spriteBatch.Draw(goTexture, countdownRect, Color.White);
+                }
 
             }
 
