@@ -20,7 +20,7 @@ namespace final_project__race_cars
         public float rotationAngle = 0f;
         public bool OnTrack = false;
         public float currentSpeed = 0f;
-
+        public bool passedCheckpoint = false;
 
         public int lapCount = 0;
 

@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace final_project__race_cars
@@ -29,6 +31,13 @@ namespace final_project__race_cars
         Texture2D oneTexture;
         Texture2D goTexture;
 
+        SoundEffect countdownSound;
+        SoundEffect carSound;
+
+        SoundEffectInstance carSoundInstance;
+
+        Song backgroundMusic;
+
         float countdownTimer = 0f;
         bool countdownActive = false;
 
@@ -50,6 +59,8 @@ namespace final_project__race_cars
         Rectangle finishLinestart = new Rectangle(390, 300, 6, 77);
         
         Rectangle finishLineend = new Rectangle(402, 297, 7, 79);
+
+        Rectangle checkpoint = new Rectangle(390, 60, 30, 130);
 
         Rectangle[] colorRects = new Rectangle[8];
         Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Purple, Color.Orange, Color.Pink, Color.White };
@@ -193,11 +204,31 @@ namespace final_project__race_cars
             twoTexture = Content.Load<Texture2D>("Two");
             oneTexture = Content.Load<Texture2D>("One");
             goTexture = Content.Load<Texture2D>("Go");
+            countdownSound = Content.Load<SoundEffect>("countdown");
+            carSound = Content.Load<SoundEffect>("F1Car");
+
+            backgroundMusic = Content.Load<Song>("backgroundMusic");
+
+            carSoundInstance = carSound.CreateInstance();
+            carSoundInstance.IsLooped = true;
 
             firstplace = player1Car;
             secondplace = player2Car;
 
+            // ENGINE SOUND VOLUME
+            carSoundInstance.Volume = 0.35f;
 
+            // BACKGROUND MUSIC VOLUME
+            MediaPlayer.Volume = 0.25f;
+
+            // MASTER SOUND EFFECT VOLUME
+            SoundEffect.MasterVolume = 0.75f;
+
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.4f;
+
+            MediaPlayer.Play(backgroundMusic);
             // TODO: use this.Content to load your game content here
         }
 
@@ -325,6 +356,9 @@ namespace final_project__race_cars
                 player1Car.crossedStartLine = false;
                 player2Car.crossedStartLine = false;
 
+                player1Car.passedCheckpoint = false;
+                player2Car.passedCheckpoint = false;
+
                 firstplace = player1Car;
                 secondplace = player2Car;
                 if (mouse.X >= 20 && mouse.X <= 120 && mouse.Y >= 420 && mouse.Y <= 460)
@@ -363,7 +397,8 @@ namespace final_project__race_cars
             else if(screen == Screen.Track1)
             {
                 KeyboardState kb = Keyboard.GetState();
-                if(!raceStarted)
+                
+                if (!raceStarted)
                 {
                     player1Car.pos = new Vector2(300, 325);
                     player2Car.pos = new Vector2(300, 350);
@@ -376,6 +411,7 @@ namespace final_project__race_cars
                     countdownTimer = 0f;
                     countdownActive = true;
                     raceStarted = true;
+                    countdownSound.Play();
                 }
 
                 if (mouse.X >= 20 && mouse.X <= 160 && mouse.Y >= 410 && mouse.Y <= 460)
@@ -390,6 +426,8 @@ namespace final_project__race_cars
                         player1Car.OnTrack = false;
                         player2Car.OnTrack = false;
                         raceStarted = false;
+    
+                        carSoundInstance.Stop();
                         screen = Screen.TrackSelect;
                     }
                 }
@@ -397,6 +435,28 @@ namespace final_project__race_cars
                 else
                 {
                     backPressed = false;
+                }
+
+                if (!countdownActive)
+                {
+                    bool accelerating =
+                        kb.IsKeyDown(Keys.W) ||
+                        kb.IsKeyDown(Keys.Up);
+
+                    if (accelerating)
+                    {
+                        if (carSoundInstance.State != SoundState.Playing)
+                        {
+                            carSoundInstance.Play();
+                        }
+                    }
+                    else
+                    {
+                        if (carSoundInstance.State == SoundState.Playing)
+                        {
+                            carSoundInstance.Stop();
+                        }
+                    }
                 }
 
                 //player1
@@ -554,7 +614,17 @@ namespace final_project__race_cars
 
                     // START SIDE
 
-                    if (p1bounds.Intersects(finishLinestart))
+                    if (p1bounds.Intersects(checkpoint))
+                    {
+                        player1Car.passedCheckpoint = true;
+                    }
+
+                    if (p2bounds.Intersects(checkpoint))
+                    {
+                        player2Car.passedCheckpoint = true;
+                    }
+
+                    if (p1bounds.Intersects(finishLinestart) && player1Car.passedCheckpoint)
                     {
                         if (!player1Car.onStartLine)
                         {
@@ -588,6 +658,8 @@ namespace final_project__race_cars
                                     player1Car.totalLapTime / player1Car.lapCount;
 
                                 player1Car.currentLapTime = 0f;
+                                player1Car.passedCheckpoint = false;
+                                player2Car.passedCheckpoint = false;
 
                                 // Must touch start side again before another lap
                                 player1Car.crossedStartLine = false;
@@ -599,7 +671,7 @@ namespace final_project__race_cars
                         player1Car.onEndLine = false;
                     }
 
-                    if (p2bounds.Intersects(finishLinestart))
+                    if (p2bounds.Intersects(finishLinestart) && player2Car.passedCheckpoint)
                     {
                         if (!player2Car.onStartLine)
                         {

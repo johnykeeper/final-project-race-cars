@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:cars-colours.png
 
+#begin countdown.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:countdown.wav
+
+#begin F1Car.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:F1Car.wav
+
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -91,6 +103,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Track1.png
+
+#begin X:/My Drive/A final project racing game/backgroundMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:X:/My Drive/A final project racing game/backgroundMusic.mp3;backgroundMusic.mp3
 
 #begin X:/My Drive/A final project racing game/cars-button.png
 /importer:TextureImporter
