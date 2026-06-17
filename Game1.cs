@@ -17,8 +17,10 @@ namespace final_project__race_cars
         Texture2D startButton;
         Texture2D quitButton;
         Texture2D carsButton;
+        Texture2D controlsButton;
         Texture2D trackSelectBackground;
         Texture2D carsSelectBackground;
+        Texture2D controlsbackground;
         Texture2D Track1Background;
         Texture2D Track1Cover;
         Cars player1Car;
@@ -49,7 +51,7 @@ namespace final_project__race_cars
         bool quitPressed = false;
         bool backPressed = false;
         bool Track1Pressed = false;
-        bool carsBackPressed = false;
+        bool controlsPressed = false;
         bool raceStarted = false;
         List<Rectangle> wallRects = new List<Rectangle>();
         List<Rectangle> slowRects = new List<Rectangle>();
@@ -62,13 +64,12 @@ namespace final_project__race_cars
 
         Rectangle checkpoint = new Rectangle(390, 60, 30, 130);
 
-        Rectangle[] colorRects = new Rectangle[8];
-        Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Purple, Color.Orange, Color.Pink, Color.White };
+        
 
         int selectedCar = 1;
 
 
-        enum Screen {Menu, TrackSelect, Race, carsColour, Track1}
+        enum Screen {Menu, TrackSelect, Race, carsColour, Track1, controls}
         Screen screen;
         MouseState mouse;
         MouseState oldMouse;
@@ -77,15 +78,17 @@ namespace final_project__race_cars
         float carsScale = 1.0f;
         float startScale = 1.0f;
         float quitScale = 1.0f;
+        float controlscale = 1.0f;
 
         int startOrigX = 40, startOrigY = 206, startW = 300, startH = 68;
         int carsOrigX = 40, carsOrigY = 280, carsW = 300, carsH = 68;
         int quitOrigX = 40, quitOrigY = 358, quitW = 300, quitH = 68;
+        int controlOrigX = 665, controlOrigY = 4, controlW = 140, controlH = 50;
 
         int startX = 40, startY = 206;
         int carsX = 40, carsY = 280;
         int quitX = 40, quitY = 354;
-
+        int controlX = 665, controlY = 4;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -206,6 +209,8 @@ namespace final_project__race_cars
             goTexture = Content.Load<Texture2D>("Go");
             countdownSound = Content.Load<SoundEffect>("countdown");
             carSound = Content.Load<SoundEffect>("F1Car");
+            controlsbackground = Content.Load<Texture2D>("controls");
+            controlsButton = Content.Load<Texture2D>("controls-button");
 
             backgroundMusic = Content.Load<Song>("backgroundMusic");
 
@@ -329,12 +334,41 @@ namespace final_project__race_cars
                     quitY = quitOrigY;
                 }
 
+                // Control button
+                if (mouseX >= controlOrigX && mouseX <= controlOrigX + controlW && mouseY >= controlOrigY && mouseY <= controlOrigY + controlH)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && controlsPressed == false)
+                    {
+                        controlsPressed = true;
+                        controlscale = 0.9f;
+                        controlX = controlOrigX + (int)(controlW * (1 - controlscale) / 2);
+                        controlY = controlOrigY + (int)(controlH * (1 - controlscale) / 2);
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && controlsPressed == true)
+                    {
+                        controlsPressed = false;
+                        controlscale = 1.0f;
+                        controlX = carsOrigX;
+                        controlY = carsOrigY;
+                        screen = Screen.controls;
+                    }
+                }
+                else
+                {
+                    controlscale = 1.0f;
+                    controlsPressed = false;
+                    controlX = controlOrigX;
+                    controlY = controlOrigY;
+                }
+
 
 
 
 
 
             }
+
+
 
 
             else if (screen == Screen.TrackSelect)
@@ -394,10 +428,26 @@ namespace final_project__race_cars
                 }
             }
 
-            else if(screen == Screen.Track1)
+            else if (screen == Screen.controls)
+            {
+                if (mouse.X >= 20 && mouse.X <= 120 && mouse.Y >= 420 && mouse.Y <= 460)
+                {
+                    if (mouse.LeftButton == ButtonState.Pressed && backPressed == false)
+                    {
+                        backPressed = true;
+                    }
+                    if (mouse.LeftButton == ButtonState.Released && backPressed == true)
+                    {
+                        backPressed = false;
+                        screen = Screen.Menu;
+                    }
+                }
+            }
+
+            else if (screen == Screen.Track1)
             {
                 KeyboardState kb = Keyboard.GetState();
-                
+
                 if (!raceStarted)
                 {
                     player1Car.pos = new Vector2(300, 325);
@@ -426,7 +476,7 @@ namespace final_project__race_cars
                         player1Car.OnTrack = false;
                         player2Car.OnTrack = false;
                         raceStarted = false;
-    
+
                         carSoundInstance.Stop();
                         screen = Screen.TrackSelect;
                     }
@@ -659,7 +709,7 @@ namespace final_project__race_cars
 
                                 player1Car.currentLapTime = 0f;
                                 player1Car.passedCheckpoint = false;
-                                player2Car.passedCheckpoint = false;
+
 
                                 // Must touch start side again before another lap
                                 player1Car.crossedStartLine = false;
@@ -701,7 +751,7 @@ namespace final_project__race_cars
                                     player2Car.totalLapTime / player2Car.lapCount;
 
                                 player2Car.currentLapTime = 0f;
-
+                                player2Car.passedCheckpoint = false;
                                 player2Car.crossedStartLine = false;
                             }
                         }
@@ -854,7 +904,7 @@ namespace final_project__race_cars
                             }
                             else
                             {
-                                player2Car.Tint = Color.LightBlue;
+                                player2Car.Tint = Color.Blue;
                                 player2Car.colorName = "blue";
                             }
                         }
@@ -965,7 +1015,9 @@ namespace final_project__race_cars
                     _spriteBatch.Draw(carsButton, new Rectangle(carsX, carsY, (int)(carsW * carsScale), (int)(carsH * carsScale)), Color.White);
 
                     _spriteBatch.Draw(quitButton, new Rectangle(quitX, quitY, (int)(quitW * quitScale), (int)(quitH * quitScale)), Color.White);
-                }
+
+                    _spriteBatch.Draw(controlsButton, new Rectangle(controlX, controlY, (int)(controlW * controlscale), (int)(controlH * controlscale)), Color.White);
+            }
                 else if(screen == Screen.TrackSelect)
                 {
                     _spriteBatch.Draw(trackSelectBackground, window, Color.White);
@@ -979,9 +1031,13 @@ namespace final_project__race_cars
                 player1Car.Draw(_spriteBatch);
                 player2Car.Draw(_spriteBatch);
             }
+            else if(screen == Screen.controls)
+            {
+                _spriteBatch.Draw(controlsbackground, window, Color.White);
+            }
             else if (screen == Screen.Track1)
-            { 
-                
+            {
+
                 _spriteBatch.Draw(Track1Background, window, Color.White);
                 player1Car.Draw(_spriteBatch);
                 player2Car.Draw(_spriteBatch);
